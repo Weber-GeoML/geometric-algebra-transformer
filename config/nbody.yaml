@@ -67,6 +67,10 @@ wandb:
   entity: "weber-geoml-harvard-university"
   name: ${run_name}
   dir: ${exp_dir}/wandb
+  # Additional wandb logging controls
+  log_artifacts: false  # Whether to log files as artifacts
+  log_csv_files: false  # Whether to save CSV files to wandb
+  log_config_file: true  # Whether to save config file to wandb
 
 defaults:
   - model: gatr_nbody

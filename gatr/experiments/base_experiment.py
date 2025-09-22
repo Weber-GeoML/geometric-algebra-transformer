@@ -354,7 +354,7 @@ class BaseExperiment:
                 dfs[full_tag] = df
 
                 # Upload CSV as artifact to wandb
-                if wandb.run is not None:
+                if wandb.run is not None and getattr(self.cfg.wandb, "log_csv_files", True):
                     csv_path = Path(self.cfg.exp_dir) / "metrics" / f"eval_{full_tag}.csv"
                     wandb.save(str(csv_path))
         return dfs
@@ -547,10 +547,11 @@ class BaseExperiment:
             log_mlflow(key, value, kind="param")
 
         # Save config file as wandb artifact
-        if wandb.run is not None:
+        if wandb.run is not None and getattr(self.cfg.wandb, "log_config_file", True):
             # Log the config file as an artifact
             wandb.save(str(config_filename))
 
+        if wandb.run is not None and getattr(self.cfg.wandb, "log_artifacts", True):
             # You can also create a dedicated artifact
             config_artifact = wandb.Artifact(
                 name=f"config_{wandb.run.id}", type="config", description="Experiment configuration"
@@ -697,8 +698,8 @@ class BaseExperiment:
 
         # Log batch loss to wandb ( per-batch granularity)
         # Note: this will log every single batch, which could be a lot of data
-        if wandb.run is not None:
-            wandb.log({"train.batch_loss": loss.item()})
+        # if wandb.run is not None:
+        #     wandb.log({"train.batch_loss": loss.item()})
 
         # Grad norm clipping
         try:

@@ -478,6 +478,13 @@ geometric-algebra-transformer  PhenomNN
 /n/holylabs/LABS/mweber_lab/Everyone/rpellegrin
 ```
 
+Make a gatr conda/mamba venv and install the packages. The easiest is probably (with conda):
+
+```
+conda create -n gatr python=3.11 -y && conda activate gatr
+pip install -r raphael_env_example/requirement_gatr.txt
+```
+
 First make a folder:
 ```
 mkdir -p /n/netscratch/mweber_lab/Everyone/rpellegrinext/tmp/gatr_experiments
@@ -554,3 +561,12 @@ sbatch run_gatr_different_samples.sh
 I am uploading the pip freeze reuslts from my environment there.
 raphael_env_example/requirements.txt
 
+STUFF I RAN ON CLUSTER
+
+pip uninstall xformers -y
+pip install xformers==0.0.20
+
+
+## Notes on incorporating GM-CNN instead of GATR layer
+
+GATrBlock is a transformer-style block that processes both multivectors and scalars

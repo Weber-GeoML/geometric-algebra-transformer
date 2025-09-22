@@ -8,10 +8,11 @@ from torch import nn
 from torch_geometric.data import Data
 from torch_geometric.nn import knn_graph
 
+
 # Custom implementation to replace torch_scatter
 def scatter(src, index, dim=-1, out=None, dim_size=None, reduce="sum"):
     import torch
-    
+
     if out is None:
         size = list(src.size())
         if dim_size is not None:
@@ -21,7 +22,7 @@ def scatter(src, index, dim=-1, out=None, dim_size=None, reduce="sum"):
         else:
             size[dim] = int(index.max()) + 1
         out = torch.zeros(size, dtype=src.dtype, device=src.device)
-        
+
     if reduce == "sum" or reduce == "add":
         return out.scatter_add_(dim, index, src)
     elif reduce == "mean":
@@ -32,12 +33,12 @@ def scatter(src, index, dim=-1, out=None, dim_size=None, reduce="sum"):
         return out / count
     elif reduce == "min":
         # This is a simplified version - might not handle all edge cases
-        out.fill_(float('inf'))
+        out.fill_(float("inf"))
         out.scatter_reduce_(dim, index, src, reduce="amin", include_self=False)
         return out
     elif reduce == "max":
         # This is a simplified version - might not handle all edge cases
-        out.fill_(float('-inf'))
+        out.fill_(float("-inf"))
         out.scatter_reduce_(dim, index, src, reduce="amax", include_self=False)
         return out
     else:
@@ -400,6 +401,8 @@ class NBodySE3TransformerWrapper(nn.Module):
 
     def _build_graphs(self, locations, velocities, masses):
         """Builds graph for a full batch."""
+        if dgl is None:
+            raise ImportError("DGL is required for SEGNN wrapper but not available")
         graphs = [
             self._build_graph(loc, vel, m) for loc, vel, m in zip(locations, velocities, masses)
         ]
@@ -409,6 +412,8 @@ class NBodySE3TransformerWrapper(nn.Module):
 
     def _build_graph(self, locations, velocities, masses):
         """Builds graph for a single sample."""
+        if dgl is None:
+            raise ImportError("DGL is required for SEGNN wrapper but not available")
         n_points = len(locations)
         indices_src, indices_dst = self._fully_connected_idx(n_points)
         graph = dgl.DGLGraph((indices_src, indices_dst)).to(locations.device)
