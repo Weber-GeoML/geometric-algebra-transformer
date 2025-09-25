@@ -6,6 +6,7 @@ from .attention.self_attention import SelfAttention
 from .dropout import GradeDropout
 from .layer_norm import EquiLayerNorm
 from .linear import EquiLinear
+from .vanilla_mlp import VanillaMLP
 from .mlp.geometric_bilinears import GeometricBilinear
 from .mlp.mlp import GeoMLP
 from .mlp.nonlinearities import ScalarGatedNonlinearity
