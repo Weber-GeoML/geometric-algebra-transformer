@@ -37,6 +37,21 @@ cd geometric-algebra-transformer
 docker build -f docker/Dockerfile --tag gatr:latest .
 ```
 
+(on mac I/Raph am running:
+
+```
+docker buildx build --platform linux/amd64 -f docker/Dockerfile --tag gatr:latest .
+```
+
+and then
+
+```
+(gatr) ➜  geometric-algebra-transformer git:(main_geoml) ✗ docker run --rm -it -v $PWD:$PWD -w $PWD gatr:latest /bin/bash
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+root@76345054094e:/Users/pellegrinraphael/Desktop/Repos_Equivariant/geometric-algebra-transformer# 
+```
+)
+
 The commands for Windows are similar.
 
 Once the image has built successfully, we can run a container that is based on it.
@@ -410,7 +425,11 @@ If you find our code useful, please cite:
 }
 ```
 
-## Raphael Notes
+## 7. Raphael Notes
+
+### 7.1 Note about the lab space on Harvard FAS RC
+
+#### 7.1.1 Scratch space
 
 Our new lab scratch space is:
 ```
@@ -425,6 +444,8 @@ The Scratch Space (/n/netscratch/mweber_lab):
 * Data may be automatically purged after a certain period
 * Better suited for running experiments and processing large datasets
 * Ideal for intermediate results and temporary files
+
+#### 7.1.2 Lab directory
 
 Lab directory on FASRC: 
 ```
@@ -445,15 +466,40 @@ Lab Space (/n/holylabs/LABS/mweber_lab):
 * Data is not automatically purged
 * Better suited for storing final results, papers, and important code
 * Ideal for collaborative work and sharing results with lab members
-Best Practices:
+
+
+
+#### 7.1.3 Best Practices:
+
 * Use scratch space for running experiments and temporary data
 * Use lab space for storing important results, code, and permanent data
 * Regularly move important results from scratch to lab space
 * Don't rely on scratch space for long-term storage
 
-### Run GATr on cluster for HARVARD people
+### 7.2 Running locally on M3 mac with docker
 
-Can only run on the cluster. On my mac locally it does not work.
+Build the docker image:
+```
+docker buildx build --platform linux/amd64 -f docker/Dockerfile --tag gatr:latest .
+```
+
+Run it:
+```
+docker run --rm -it -v $PWD:$PWD -w $PWD gatr:latest /bin/bash 
+```
+
+Then build the data:
+
+```
+root@e45206bb740b:/Users/pellegrinraphael/Desktop/Repos_Equivariant/geometric-algebra-transformer# BASEDIR=/tmp/gatr-experiments
+root@e45206bb740b:/Users/pellegrinraphael/Desktop/Repos_Equivariant/geometric-algebra-transformer# python scripts/generate_nbody_dataset.py base_dir="${BASEDIR}" seed=42
+```
+
+etc...
+
+### 7.3 Run GATr on Harvard cluster
+
+Can only run on the cluster. On mac, locally, I can run with the docker image.
 
 
 Clone. in 
@@ -561,12 +607,16 @@ sbatch run_gatr_different_samples.sh
 I am uploading the pip freeze reuslts from my environment there.
 raphael_env_example/requirements.txt
 
-STUFF I RAN ON CLUSTER
+#### 7.3.1 Debug:
 
+STUFF I RAN ON CLUSTER (when running from outside docker, on host system)
+
+```
 pip uninstall xformers -y
 pip install xformers==0.0.20
+```
 
 
-## Notes on incorporating GM-CNN instead of GATR layer
+## 8. Notes on incorporating GM-CNN instead of GATR layer
 
 GATrBlock is a transformer-style block that processes both multivectors and scalars

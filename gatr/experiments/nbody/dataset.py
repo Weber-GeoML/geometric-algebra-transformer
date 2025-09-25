@@ -57,9 +57,14 @@ class NBodyDataset(torch.utils.data.Dataset):
             Configuration for the dataset
         """
         super().__init__()
-        print(f"[NBodyDataset] Dataset config: use_gmcnn={self.config.use_gmcnn}")
+        self.config = config  # Assign config to self.config
+
+        # Handle the case where config might be None
+        use_gmcnn = self.config.use_gmcnn if self.config is not None else False
+        print(f"[NBodyDataset] Dataset config: use_gmcnn={use_gmcnn}")
         print(f"[NBodyDataset] Subsample fraction: {subsample}")
         print(f"[NBodyDataset] Keep trajectories: {keep_trajectories}")
+
         self.x, self.y, self.trajectories = self._load_data(
             filename, subsample, keep_trajectories=keep_trajectories
         )

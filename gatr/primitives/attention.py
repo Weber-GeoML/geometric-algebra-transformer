@@ -417,9 +417,9 @@ def geometric_attention(
     return v_out_mv, v_out_s
 
 
-# Original: @torch.compiler.disable
-@(lambda f: f)  # Dummy decorator that just returns the function
-@(lambda f: f)  # Dummy decorator that just returns the function
+# Original: @torch.compiler.disable (removed for compatibility)
+# Invalid decorator syntax removed
+# Invalid decorator syntax removed
 def _sdpa_graph_breaking(q, k, v, attn_mask):
     """A helper function to isolate the graph-breaking parts of the attention (cf. decorator).
 

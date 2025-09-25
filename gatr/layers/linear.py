@@ -1,6 +1,10 @@
 # Copyright (c) 2025 Qualcomm Technologies, Inc.
 # All rights reserved.
-"""Pin-equivariant linear layers between multivector tensors (torch.nn.Modules)."""
+"""Pin-equivariant linear layers between multivector tensors (torch.nn.Modules).
+
+This is the layer that we want to replace with the almost equivariant layer from
+GM-CNN.
+"""
 
 from typing import Optional, Tuple, Union
 
