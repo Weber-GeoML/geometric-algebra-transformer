@@ -1,6 +1,6 @@
 # GATR Repository Overview
 
-A comprehensive guide to the Geometric Algebra Transformer codebase - estimated reading time: 8-10 minutes.
+A comprehensive guide to the Geometric Algebra Transformer codebase.
 
 ## Table of Contents
 1. [Architecture Overview](#architecture-overview)
