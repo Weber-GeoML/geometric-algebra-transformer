@@ -1,0 +1,42 @@
+# Configuration for VanillaGATr on n-body task
+# This replaces input/output EquiLinear layers with VanillaMLP
+
+_target_: gatr.nets.VanillaGATr
+
+# Network dimensions
+in_mv_channels: 2
+out_mv_channels: 1
+hidden_mv_channels: 16
+in_s_channels: null
+out_s_channels: null
+hidden_s_channels: 64
+
+# Transformer configuration
+num_blocks: 4
+
+# Attention configuration
+attention:
+  _target_: gatr.layers.attention.config.SelfAttentionConfig
+  multi_query: false
+  num_heads: 8
+  key_query_dim: 64
+  hidden_mv_channels: 16
+  hidden_s_channels: 64
+
+# MLP configuration (for internal GATr blocks - still equivariant)
+mlp:
+  _target_: gatr.layers.mlp.config.MLPConfig
+  activation: gelu
+
+# VanillaMLP configuration (for input/output projections)
+vanilla_config:
+  hidden_dim: null  # Auto-compute as 2 * input_dim
+  num_layers: 3     # Deeper MLPs for more capacity
+  activation: "gelu"
+  dropout_prob: 0.1
+
+# Only replace input/output projections, keep internal blocks equivariant
+replace_internal: false
+
+# Training configuration
+dropout_prob: 0.1
